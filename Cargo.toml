@@ -1,0 +1,13 @@
+[package]
+name = "morphy"
+version = "0.1.0"
+edition = "2021"
+description = "WordNet morphological lemmatizer (the 'morphy' algorithm), ported from NLTK"
+license = "Apache-2.0"
+repository = ""
+readme = "README.md"
+keywords = ["wordnet", "lemmatizer", "nlp", "morphy", "stemming"]
+categories = ["text-processing"]
+publish = false
+
+[dependencies]
