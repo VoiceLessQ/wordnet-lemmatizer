@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "morphy"
+name = "wordnet-lemmatizer"
 version = "0.1.0"

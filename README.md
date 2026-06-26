@@ -1,11 +1,11 @@
-# morphy
+# wordnet-lemmatizer
 
 A dependency-free Rust port of WordNet's morphological lemmatizer, the "morphy"
 algorithm exposed by NLTK's `WordNetLemmatizer`.
 
-Unlike a binding, morphy carries its own data: a compact slice of WordNet is baked
-into the crate, so it needs no runtime files and builds for `#![no_std]` (with
-`alloc`). It is verified to reproduce NLTK exactly.
+Unlike a binding, it carries its own data: a compact slice of WordNet is baked into
+the crate, so it needs no runtime files and builds for `#![no_std]` (with `alloc`).
+It is verified to reproduce NLTK exactly.
 
 Three modes, matching NLTK:
 
@@ -14,7 +14,7 @@ Three modes, matching NLTK:
 - `lemmatize` (`lemmatize`): the shortest lemma, or the input unchanged.
 
 ```rust
-use morphy::{Lemmatizer, Pos};
+use wordnet_lemmatizer::{Lemmatizer, Pos};
 
 let wnl = Lemmatizer::embedded();            // baked-in data, no files needed
 assert_eq!(wnl.lemmatize("dogs", Pos::Noun), "dog");
@@ -30,7 +30,7 @@ only the embedded data:
 
 ```toml
 [dependencies]
-morphy = { version = "0.1", default-features = false }
+wordnet-lemmatizer = { version = "0.1", default-features = false }
 ```
 
 ## Verification

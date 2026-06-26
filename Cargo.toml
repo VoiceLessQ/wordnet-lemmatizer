@@ -1,5 +1,5 @@
 [package]
-name = "morphy"
+name = "wordnet-lemmatizer"
 version = "0.1.0"
 edition = "2021"
 description = "WordNet morphological lemmatizer (the 'morphy' algorithm), ported from NLTK, with baked-in data and no_std support"
@@ -17,7 +17,7 @@ default = ["std"]
 std = []
 
 [[bin]]
-name = "morphy"
+name = "wordnet-lemmatizer"
 required-features = ["std"]
 
 [dependencies]

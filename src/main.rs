@@ -8,7 +8,7 @@
 use std::io::{self, BufRead, Write};
 use std::path::PathBuf;
 
-use morphy::{Lemmatizer, Pos};
+use wordnet_lemmatizer::{Lemmatizer, Pos};
 
 fn parse_pos(s: &str) -> Option<Pos> {
     Some(match s {
