@@ -2,12 +2,22 @@
 name = "morphy"
 version = "0.1.0"
 edition = "2021"
-description = "WordNet morphological lemmatizer (the 'morphy' algorithm), ported from NLTK"
+description = "WordNet morphological lemmatizer (the 'morphy' algorithm), ported from NLTK, with baked-in data and no_std support"
 license = "Apache-2.0"
 repository = ""
 readme = "README.md"
 keywords = ["wordnet", "lemmatizer", "nlp", "morphy", "stemming"]
-categories = ["text-processing"]
+categories = ["text-processing", "no-std"]
 publish = false
+
+[features]
+default = ["std"]
+# `std` adds `Lemmatizer::from_wordnet_dir` (read a live WordNet install) and the
+# CLI binary. Without it the crate is `no_std` + `alloc` and uses only baked data.
+std = []
+
+[[bin]]
+name = "morphy"
+required-features = ["std"]
 
 [dependencies]
