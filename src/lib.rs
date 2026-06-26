@@ -16,6 +16,9 @@
 //!   unchanged when nothing is found.
 
 use std::collections::{HashMap, HashSet};
+use std::fs::File;
+use std::io::{BufRead, BufReader};
+use std::path::Path;
 
 /// WordNet part-of-speech tag (`n`, `v`, `a`, `r`, `s`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -155,12 +158,47 @@ impl Lemmatizer {
     /// (the `nltk_data/corpora/wordnet` layout: `noun.exc`, `verb.exc`, `adj.exc`,
     /// `adv.exc`, and `index.{noun,verb,adj,adv}`).
     ///
-    /// TODO: first real task. Parse the `.exc` files (two+ whitespace columns:
-    /// `surface lemma...`) into `exceptions`, and the `index.*` files (lemma is
-    /// column 0, POS is column 1) into `lemmas`. Decide whether to read at runtime
-    /// or bake the data in at build time.
-    pub fn from_wordnet_dir(_dir: &std::path::Path) -> std::io::Result<Self> {
-        todo!("parse *.exc and index.* from the WordNet data dir")
+    /// Mirrors NLTK's `_load_exception_map` and `_load_lemma_pos_offset_map`:
+    /// `.exc` lines are `surface lemma...`; `index.*` lines are skipped while they
+    /// start with a space (the license header), and column 0 is the lemma. The
+    /// satellite-adjective POS shares the adjective data (see [`Pos::data_pos`]).
+    pub fn from_wordnet_dir(dir: &Path) -> std::io::Result<Self> {
+        const FILEMAP: [(Pos, &str); 4] = [
+            (Pos::Noun, "noun"),
+            (Pos::Verb, "verb"),
+            (Pos::Adj, "adj"),
+            (Pos::Adv, "adv"),
+        ];
+
+        let mut exceptions: HashMap<Pos, HashMap<String, Vec<String>>> = HashMap::new();
+        let mut lemmas: HashSet<(String, Pos)> = HashSet::new();
+
+        for (pos, suffix) in FILEMAP {
+            // <surface> <lemma>...
+            let mut map = HashMap::new();
+            for line in BufReader::new(File::open(dir.join(format!("{suffix}.exc")))?).lines() {
+                let line = line?;
+                let mut it = line.split_whitespace();
+                if let Some(surface) = it.next() {
+                    map.insert(surface.to_string(), it.map(str::to_string).collect());
+                }
+            }
+            exceptions.insert(pos, map);
+
+            // index.*: skip the leading license lines (they start with a space);
+            // column 0 is the lemma, and the file's POS is fixed by `suffix`.
+            for line in BufReader::new(File::open(dir.join(format!("index.{suffix}")))?).lines() {
+                let line = line?;
+                if line.starts_with(' ') {
+                    continue;
+                }
+                if let Some(lemma) = line.split_whitespace().next() {
+                    lemmas.insert((lemma.to_string(), pos));
+                }
+            }
+        }
+
+        Ok(Self::new(exceptions, lemmas))
     }
 }
 
