@@ -8,6 +8,7 @@ repository = "https://github.com/VoiceLessQ/wordnet-lemmatizer"
 readme = "README.md"
 keywords = ["wordnet", "lemmatizer", "nlp", "morphy", "stemming"]
 categories = ["text-processing", "no-std"]
+exclude = ["/.github", "/difftest.py"]
 
 [features]
 default = ["std"]

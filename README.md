@@ -1,5 +1,8 @@
 # wordnet-lemmatizer
 
+[![ci](https://github.com/VoiceLessQ/wordnet-lemmatizer/actions/workflows/ci.yml/badge.svg)](https://github.com/VoiceLessQ/wordnet-lemmatizer/actions/workflows/ci.yml)
+[![crates.io](https://img.shields.io/crates/v/wordnet-lemmatizer.svg)](https://crates.io/crates/wordnet-lemmatizer)
+
 A dependency-free Rust port of WordNet's morphological lemmatizer, the "morphy"
 algorithm exposed by NLTK's `WordNetLemmatizer`.
 
