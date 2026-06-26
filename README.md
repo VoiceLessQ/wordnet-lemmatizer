@@ -36,9 +36,10 @@ wordnet-lemmatizer = { version = "0.1", default-features = false }
 ## Verification
 
 `Lemmatizer::embedded()` is differential-tested against Python `nltk` 3.9.4
-(`WordNetLemmatizer().lemmatize`): **31,952 / 31,952 exact** over every WordNet
-exception-file surface plus regular rule-based inflections, across all four parts of
-speech.
+(`WordNetLemmatizer().lemmatize`): **67,000+ cases, zero mismatches**. The corpus
+covers every WordNet exception-file surface, regular rule-based inflections, and an
+edge-case fuzz pass (random/garbage strings, mixed case, multiword underscore lemmas,
+non-ASCII), across all five POS codes (n/v/a/r/s).
 
 ## Licensing
 
